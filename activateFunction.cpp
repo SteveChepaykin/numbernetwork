@@ -1,3 +1,5 @@
+#include <cmath>
+#include <iostream>
 #include "activatefunction.h"
 
 void ActivationFunction::set() {

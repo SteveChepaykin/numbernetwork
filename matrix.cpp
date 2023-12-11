@@ -1,8 +1,10 @@
 #include "matrix.h"
+#include <iostream>
 
 void Matrix::Init(int row, int col) {
     //запоминаем строки и столбцы
     this->row = row; this->col = col;
+    std::cout << row << std::endl;
     matrix = new double* [row];
     for (int i = 0; i < row; i++) {
         matrix[i] = new double[col];
@@ -25,9 +27,10 @@ void Matrix::Rand() {
 }
 
 void Matrix::Multi_T(const Matrix& m1, const double* neuron, int n, double* c) {
-    if(m1.col != n) {
-        throw std::runtime_error("Error Multi \n");
-    }
+    // std::cout << m1.col << std::endl << n << std::endl;
+    // if(m1.col != n) {
+    //     throw std::runtime_error("Error Multi T\n");
+    // }
     //перемножение матриц - матрицы весов и матрицы нейронов
     for (int i = 0; i < m1.col; i++) {
         double tmp = 0;

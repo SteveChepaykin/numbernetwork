@@ -12,8 +12,10 @@ void Network::Init(dataNetwork data)
     }
     weights = new Matrix[sloi - 1];
     dops = new double *[sloi - 1];
-    for (int i = 0; i < sloi; i++)
+    for (int i = 0; i < sloi - 1; i++)
     {
+        // cout << sloi << endl;
+        cout << size[(i+1)] << " " << size[i] << endl;
         weights[i].Init(size[i + 1], size[i]);
         dops[i] = new double[size[i + 1]];
         weights[i].Rand();

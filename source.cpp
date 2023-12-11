@@ -1,6 +1,8 @@
-#include <network.h>
 #include <cmath>
 #include <chrono>
+#include <iostream>
+#include <cstring>
+#include "network.h"
 
 struct dataInfo
 {
@@ -42,7 +44,7 @@ dataNetwork ReadDataNetwork(string path)
     return data;
 }
 
-dataInfo *ReadData(string path, const dataNetwork &dataNW, int &examples)
+dataInfo* ReadData(string path, const dataNetwork &dataNW, int &examples)
 {
     dataInfo *data;
     ifstream in;
@@ -54,12 +56,12 @@ dataInfo *ReadData(string path, const dataNetwork &dataNW, int &examples)
     }
     else
     {
-        cout << path << "loading...\n";
+        cout << path << " loading...\n";
     }
     string tmp;
     // int L;
     in >> tmp;
-    if (tmp == "Exapmles")
+    if (std::strcmp("Examples", tmp.data()) == 0)
     {
         in >> examples;
         cout << "Example: " << examples << endl;
@@ -70,7 +72,9 @@ dataInfo *ReadData(string path, const dataNetwork &dataNW, int &examples)
         }
         for (int i = 0; i < examples; ++i)
         {
+            cout << "example " << i << endl;
             in >> data[i].digit;
+            cout << "example digit " << data[i].digit << endl;
             for (int j = 0; j < dataNW.size[0]; ++j)
             {
                 in >> data[i].pixels[j];
@@ -103,14 +107,18 @@ int main()
         if (study)
         {
             int examples;
+            cout << "Reading file\n";
             datainfo = ReadData("lib_MNIST_edit.txt", NW_config, examples);
+            cout << "Reading done\n";
             auto begin = chrono::steady_clock::now();
-            while (ra / examples * 100 < 100)
+            while (ra / (double)examples * 100. < 100.)
             {
+                cout << "next iteration\n";
                 ra = 0;
                 auto t1 = chrono::steady_clock::now();
                 for (int i = 0; i < examples; ++i)
                 {
+                    cout << "Current iteration digits: " << datainfo[i].digit << endl;
                     NW.SetInput(datainfo[i].pixels);
                     right = datainfo[i].digit;
                     predict = NW.Forward();
@@ -130,9 +138,10 @@ int main()
                 {
                     maxra = ra;
                 }
-                cout << "ra: " << ra / examples * 100 << "\t"
-                     << "maxra: " << maxra / examples * 100;
+                cout << "ra: " << ra / (double)examples * 100. << "\t"
+                     << "maxra: " << maxra / (double)examples * 100. << endl;
                 epoch++;
+                cout << "epoch " << epoch << " completed.\n";
                 if (epoch == 20)
                 {
                     break;
@@ -152,7 +161,7 @@ int main()
         if (testflag) {
             int ex_tests;
             dataInfo* dataTest;
-            dataTest = ReadData("lib_10k.txt", NW_config, ex_tests);
+            dataTest = ReadData("lib_10k copy.txt", NW_config, ex_tests);
             ra = 0;
             for (int i = 0; i < ex_tests; ++i) {
                 NW.SetInput(dataTest[i].pixels);
@@ -162,7 +171,7 @@ int main()
                     ra++;
                 }
             }
-            cout << "RA: " << ra / ex_tests * 100 << endl;
+            cout << "RA: " << ra / (double)ex_tests * 100. << endl;
         }
         cout << "Repeat? (1/0)\n";
         cin >> repeat; 

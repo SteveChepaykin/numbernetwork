@@ -1,2 +1,2 @@
-NetWork 3
+Network 3
 784 256 10

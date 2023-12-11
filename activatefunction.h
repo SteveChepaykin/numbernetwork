@@ -1,5 +1,4 @@
 #pragma once
-#include <iostream>
 
 enum activateFunc { sigmoid  = 1, ReLU, thx };
 class ActivationFunction {
