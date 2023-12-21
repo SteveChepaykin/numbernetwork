@@ -98,7 +98,7 @@ void Network::SetInput(double *values)
 
 void Network::BackProp(double expect) {
     for (int i = 0; i < size[sloi - 1]; i++) {
-        if(1 != int(expect)) {
+        if(i != int(expect)) {
             neurons_errors[sloi - 1][i] = -neurons_values[sloi - 1][i] * actFun.useDer(neurons_values[sloi - 1][i]);
         } else {
             neurons_errors[sloi - 1][i] = (1.0 - neurons_values[sloi - 1][i]) * actFun.useDer(neurons_values[sloi - 1][i]);

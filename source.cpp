@@ -72,9 +72,12 @@ dataInfo* ReadData(string path, const dataNetwork &dataNW, int &examples)
         }
         for (int i = 0; i < examples; ++i)
         {
-            cout << "example " << i << endl;
+            // cout << "example " << i << endl;
             in >> data[i].digit;
-            cout << "example digit " << data[i].digit << endl;
+            if (i % 100 == 0) {
+                cout << i << " number " << data[i].digit << endl;  
+            }
+            // cout << "example digit " << data[i].digit << endl;
             for (int j = 0; j < dataNW.size[0]; ++j)
             {
                 in >> data[i].pixels[j];
@@ -104,11 +107,12 @@ int main()
     {
         cout << "study 1/0 ";
         cin >> study;
+        epoch = 0;
         if (study)
         {
             int examples;
             cout << "Reading file\n";
-            datainfo = ReadData("lib_MNIST_edit.txt", NW_config, examples);
+            datainfo = ReadData("lib_10k.txt", NW_config, examples);
             cout << "Reading done\n";
             auto begin = chrono::steady_clock::now();
             while (ra / (double)examples * 100. < 100.)
@@ -118,7 +122,7 @@ int main()
                 auto t1 = chrono::steady_clock::now();
                 for (int i = 0; i < examples; ++i)
                 {
-                    cout << "Current iteration digits: " << datainfo[i].digit << endl;
+                    // cout << "Current iteration digits: " << datainfo[i].digit << endl;
                     NW.SetInput(datainfo[i].pixels);
                     right = datainfo[i].digit;
                     predict = NW.Forward();
@@ -161,7 +165,7 @@ int main()
         if (testflag) {
             int ex_tests;
             dataInfo* dataTest;
-            dataTest = ReadData("lib_10k copy.txt", NW_config, ex_tests);
+            dataTest = ReadData("lib_10k.txt", NW_config, ex_tests);
             ra = 0;
             for (int i = 0; i < ex_tests; ++i) {
                 NW.SetInput(dataTest[i].pixels);
